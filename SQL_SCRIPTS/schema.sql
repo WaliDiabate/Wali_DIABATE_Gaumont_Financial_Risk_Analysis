@@ -1,10 +1,10 @@
--- GAUMONT RELATIONAL SCHEMA (ULTIMATE VERSION)
+-- GAUMONT RELATIONAL SCHEMA (ELITE BUSINESS VERSION)
 
 CREATE TABLE Director (
     director_id INTEGER PRIMARY KEY,
     full_name TEXT NOT NULL,
     nationality TEXT,
-    popularity_score REAL -- Ajout : Score TMDB/Première (ex: 525 pour Nolan)
+    popularity_score REAL -- Métrique TMDB (Notoriété du talent)
 );
 
 CREATE TABLE Film (
@@ -14,12 +14,11 @@ CREATE TABLE Film (
     total_revenue REAL,      
     theme TEXT,              
     release_date DATE,
-    -- Ajout des métriques Letterboxd pour l'analyse de sentiment
-    letterboxd_rating REAL,  -- Note moyenne sur 5
-    review_count INTEGER     -- Volume de discussions (Popularité sociale)
+    letterboxd_rating REAL,  -- Note moyenne (Qualité perçue)
+    review_count INTEGER     -- Nombre de reviews (Volume social)
 );
 
--- Table de liaison (Gère la co-réalisation)
+-- Table de liaison pour la co-réalisation (Many-to-Many)
 CREATE TABLE Film_Direction (
     film_id INTEGER,
     director_id INTEGER,
@@ -28,38 +27,46 @@ CREATE TABLE Film_Direction (
     FOREIGN KEY (director_id) REFERENCES Director(director_id)
 );
 
--- Historique hebdomadaire
+-- Suivi des performances hebdomadaires
 CREATE TABLE Weekly_Entries (
     entry_id INTEGER PRIMARY KEY,
     film_id INTEGER,
     week_number INTEGER,
-    tickets_sold INTEGER,
-    weekly_revenue REAL, -- Ajout pour plus de précision financière
+    tickets_sold INTEGER, -- Volume d'entrées
+    weekly_revenue REAL,  -- Recettes monétaires
     FOREIGN KEY (film_id) REFERENCES Film(film_id)
 );
 
--- Détails du financement
+-- Structure détaillée du financement
 CREATE TABLE Financing (
     financing_id INTEGER PRIMARY KEY,
     film_id INTEGER,
-    source_type TEXT, 
+    source_type TEXT, -- e.g., 'Equity', 'Bank Loan', 'Tax Credit'
     amount REAL,
     FOREIGN KEY (film_id) REFERENCES Film(film_id)
 );
 
--- VUE SQL FINALE : Analyse ROI vs Popularité (Le cerveau du projet)
-CREATE VIEW View_Strategic_Analysis AS
+-- VUE STRATÉGIQUE FINALE : ROI, ENGAGEMENT & BANKABILITY
+CREATE VIEW View_Gaumont_Business_Intelligence AS
 SELECT 
     f.title,
     d.full_name AS director,
-    d.popularity_score AS dir_popularity,
-    f.letterboxd_rating AS audience_score,
+    d.popularity_score AS talent_notoriety,
+    
+    -- Calcul du ROI classique
     ((f.total_revenue - f.production_budget) / f.production_budget) AS ROI_Ratio,
+    
+    -- Calcul du Taux d'Engagement (Reviews Letterboxd / Total Entrées cumulées)
+    -- On multiplie par 100 pour avoir un pourcentage
+    (CAST(f.review_count AS REAL) / (SELECT SUM(tickets_sold) FROM Weekly_Entries WHERE film_id = f.film_id)) * 100 AS Engagement_Rate,
+    
+    -- Statut financier basé sur le ROI
     CASE 
-        WHEN ((f.total_revenue - f.production_budget) / f.production_budget) > 2 THEN 'High Success'
+        WHEN ((f.total_revenue - f.production_budget) / f.production_budget) > 3 THEN 'Blockbuster Hit'
         WHEN ((f.total_revenue - f.production_budget) / f.production_budget) > 0 THEN 'Profitable'
-        ELSE 'Loss'
+        ELSE 'Financial Risk'
     END AS financial_status
+
 FROM Film f
 JOIN Film_Direction fd ON f.film_id = fd.film_id
 JOIN Director d ON fd.director_id = d.director_id;
