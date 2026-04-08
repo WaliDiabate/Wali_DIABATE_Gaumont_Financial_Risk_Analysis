@@ -1,21 +1,25 @@
--- GAUMONT RELATIONAL SCHEMA (OPTIMIZED)
+-- GAUMONT RELATIONAL SCHEMA (ULTIMATE VERSION)
 
 CREATE TABLE Director (
     director_id INTEGER PRIMARY KEY,
     full_name TEXT NOT NULL,
-    nationality TEXT
+    nationality TEXT,
+    popularity_score REAL -- Ajout : Score TMDB/Première (ex: 525 pour Nolan)
 );
 
 CREATE TABLE Film (
     film_id INTEGER PRIMARY KEY,
     title TEXT NOT NULL,
-    production_budget REAL, -- Budget
-    total_revenue REAL,      -- Recettes
-    theme TEXT,              -- Thématique
-    release_date DATE
+    production_budget REAL, 
+    total_revenue REAL,      
+    theme TEXT,              
+    release_date DATE,
+    -- Ajout des métriques Letterboxd pour l'analyse de sentiment
+    letterboxd_rating REAL,  -- Note moyenne sur 5
+    review_count INTEGER     -- Volume de discussions (Popularité sociale)
 );
 
--- Table de liaison pour la co-réalisation
+-- Table de liaison (Gère la co-réalisation)
 CREATE TABLE Film_Direction (
     film_id INTEGER,
     director_id INTEGER,
@@ -24,25 +28,38 @@ CREATE TABLE Film_Direction (
     FOREIGN KEY (director_id) REFERENCES Director(director_id)
 );
 
--- Historisation des entrées semaine par semaine
+-- Historique hebdomadaire
 CREATE TABLE Weekly_Entries (
     entry_id INTEGER PRIMARY KEY,
     film_id INTEGER,
     week_number INTEGER,
     tickets_sold INTEGER,
+    weekly_revenue REAL, -- Ajout pour plus de précision financière
     FOREIGN KEY (film_id) REFERENCES Film(film_id)
 );
 
--- Typer les sources de financement et montants
+-- Détails du financement
 CREATE TABLE Financing (
     financing_id INTEGER PRIMARY KEY,
     film_id INTEGER,
-    source_type TEXT, -- e.g., 'CNC', 'TV Rights', 'Equity'
+    source_type TEXT, 
     amount REAL,
     FOREIGN KEY (film_id) REFERENCES Film(film_id)
 );
 
--- Vue SQL pour le calcul du ROI
-CREATE VIEW View_Project_ROI AS
-SELECT title, (total_revenue - production_budget) / production_budget AS ROI_Ratio
-FROM Film;
+-- VUE SQL FINALE : Analyse ROI vs Popularité (Le cerveau du projet)
+CREATE VIEW View_Strategic_Analysis AS
+SELECT 
+    f.title,
+    d.full_name AS director,
+    d.popularity_score AS dir_popularity,
+    f.letterboxd_rating AS audience_score,
+    ((f.total_revenue - f.production_budget) / f.production_budget) AS ROI_Ratio,
+    CASE 
+        WHEN ((f.total_revenue - f.production_budget) / f.production_budget) > 2 THEN 'High Success'
+        WHEN ((f.total_revenue - f.production_budget) / f.production_budget) > 0 THEN 'Profitable'
+        ELSE 'Loss'
+    END AS financial_status
+FROM Film f
+JOIN Film_Direction fd ON f.film_id = fd.film_id
+JOIN Director d ON fd.director_id = d.director_id;
