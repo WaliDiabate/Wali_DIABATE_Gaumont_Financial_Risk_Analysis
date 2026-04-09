@@ -70,3 +70,6 @@ SELECT
 FROM Film f
 JOIN Film_Direction fd ON f.film_id = fd.film_id
 JOIN Director d ON fd.director_id = d.director_id;
+
+-- Cette ligne permet de vérifier que la vue fonctionne
+SELECT * FROM View_Gaumont_Business_Intelligence;
