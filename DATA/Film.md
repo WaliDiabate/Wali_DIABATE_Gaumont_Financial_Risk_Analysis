@@ -1,10 +1,14 @@
-# 📊 Data Pipeline & Sources
+Financial & Box-Office Data
+Source = https://www.factset.com
 
-Pour garantir la fiabilité de l'outil de décision Gaumont, les données sont extraites des sources professionnelles suivantes :
+Talent & Industry Metadata
+Source : https://www.themoviedb.org/?language=fr
 
-* **Financials (Revenue/Budget) :** `FactSet` / `Bloomberg API` (Données certifiées).
-* **Talent Notoriety :** `TMDB API` (Popularity Score mis à jour en temps réel).
-* **Social Sentiment :** `Letterboxd` = https://letterboxd.com (Scraping/API pour le Rating et Review Count).
-* **Box-Office :** `CNC` / `Comscore` (Entrées hebdomadaires).
+Talent Notoriety Tool : https://www.premiere.fr
 
-> **Note technique :** Les IDs de la base de données sont alignés sur les standards TMDB pour permettre une synchronisation automatisée via API.
+Social Sentiment & Engagement
+Source : https://letterboxd.com
+
+
+
+
