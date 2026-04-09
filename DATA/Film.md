@@ -1,5 +1,5 @@
 Financial & Box-Office Data
-Source = https://www.factset.com
+Source : https://www.factset.com
 
 Talent & Industry Metadata
 Source : https://www.themoviedb.org/?language=fr
