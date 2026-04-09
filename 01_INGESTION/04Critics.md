@@ -1,6 +1,7 @@
-# 📝 Source : CRITICS (Réception Media)
-Ce flux alimente les attributs qualitatifs de la brique "FILM".
+# 📝 Flux : CRITICS (Réception Média)
+Ce flux quantifie la présence médiatique et l'accueil du public.
 
-* **Source :** Letterboxd (Public) et Première (Presse).
-* **Données récupérées :** Notes (ratings) et nombre de reviews.
-* **Rôle :** Utilisé dans la brique "VIEW PROJECT ROI" pour calculer l'Engagement Rate (Buzz vs Entrées).
+* **Méthode :** Web Scraping ciblé (Comptage de mots-clés et extraction de notes).
+* **Données récupérées :** * `letterboxd_rating` (Note moyenne numérique).
+    * `review_count` (Nombre de mentions/critiques trouvées) via PREMIÈRE.
+* **TYPE DE DATABASE :** **SGBDR (SQL)**
