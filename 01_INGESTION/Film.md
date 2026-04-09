@@ -1,13 +1,12 @@
-Financial & Box-Office Data
-Source : https://www.factset.com
+01 - INGESTION LAYER
 
-Talent & Industry Metadata
-Source : https://www.themoviedb.org/?language=fr
+Ce dossier centralise l'arrivée des données brutes avant leur traitement :
 
-Talent Notoriety Tool : https://www.premiere.fr
+Sources Financières : Budgets et Revenus (FactSet / Bloomberg/CNC).
+Sources Cinéma : Cast et Genres (TMDB / CNC).
+Sources Médias : Mentions presse et Critiques (Première / Letterboxd).
 
-Social Sentiment & Engagement
-Source : https://letterboxd.com
+Objectif : Transformer des données venant de partout (fichiers différents) en un flux unique pour notre base de données.
 
 
 
