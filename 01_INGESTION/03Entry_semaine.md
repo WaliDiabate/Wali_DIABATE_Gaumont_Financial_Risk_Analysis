@@ -5,4 +5,4 @@ Ce flux alimente la brique "Weekly Direction" de notre schéma.
 * **OR :** Cinema Ticket Kaggle data base : https://www.kaggle.com/code/kerneler/starter-cinema-ticket-6702e8a7-3
 * **Données récupérées :** Nombre de tickets vendus par semaine en salle.
 * **Netflix Life Impact Dataset (NLID) :** From Kaggle : https://www.kaggle.com/datasets/towhid121/netflix-life-impact-dataset-nlid
-* **Rôle :** Permet d'historiser le succès du film après sa sortie et d'alimenter les indicateurs de performance.
+* **Rôle :** Permet d'historiser le succès du film après sa sortie et d'alimenter les indicateurs de performance en physique mais nous devons aussi intégrer le streaming. Comment à méditer et à travailler.
