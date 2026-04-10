@@ -1,4 +1,4 @@
-### 👥 Project Stakeholders & Perspectives
+### 👥 Contact
 
 | Name | Background | Career Path / Expertise |
 | :--- | :--- | :--- |
